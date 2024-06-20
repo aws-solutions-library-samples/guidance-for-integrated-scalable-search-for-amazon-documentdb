@@ -1,19 +1,12 @@
-# Guidance Title (required)
-
-The Guidance title should be consistent with the title established first in Alchemy.
-
-**Example:** *Guidance for Product Substitutions on AWS*
-
-This title correlates exactly to the Guidance it’s linked to, including its corresponding sample code repository. 
+# Guidance for Integrated scalable search for Amazon DocumentDB with Amazon OpenSearch
 
 
 ## Table of Content (required)
 
-List the top-level sections of the README template, along with a hyperlink to the specific section.
 
 ### Required
 
-1. [Overview](#overview-required)
+1. [Overview]
     - [Cost](#cost)
 2. [Prerequisites](#prerequisites-required)
     - [Operating System](#operating-system-required)
@@ -25,35 +18,31 @@ List the top-level sections of the README template, along with a hyperlink to th
 
 ***Optional***
 
-8. [FAQ, known issues, additional considerations, and limitations](#faq-known-issues-additional-considerations-and-limitations-optional)
-9. [Revisions](#revisions-optional)
-10. [Notices](#notices-optional)
 11. [Authors](#authors-optional)
 
 ## Overview (required)
 
-1. Provide a brief overview explaining the what, why, or how of your Guidance. You can answer any one of the following to help you write this:
 
-    - **Why did you build this Guidance?**
-    - **What problem does this Guidance solve?**
+Amazon DocumentDB provides native text search and vector search capabilities. With Amazon OpenSearch Service you can run advance search and analytics  such as fuzzy search, synonym search, cross-collection search, and multilingual search on Amazon DocumentDB data. 
 
-2. Include the architecture diagram image, as well as the steps explaining the high-level overview and flow of the architecture. 
-    - To add a screenshot, create an ‘assets/images’ folder in your repository and upload your screenshot to it. Then, using the relative file path, add it to your README. 
+This guidance demonstrates way to run advance search and analytics on Amazon DocumentDB data using Amazon OpenSearch Service.
 
-### Cost ( required )
+![Reference Architecture](assets/referecearchitecture.jpg)
 
-This section is for a high-level cost estimate. Think of a likely straightforward scenario with reasonable assumptions based on the problem the Guidance is trying to solve. Provide an in-depth cost breakdown table in this section below ( you should use AWS Pricing Calculator to generate cost breakdown ).
+1. The application reads data from and writes to Amazon DocumentDB.
+2. AWS Lambda Event Source Mapping (ESM) gets invoked in near real-time with the inserts and updates recorded Amazon DocumentDB change streams. Amazon DocumentDB change streams provide a time-ordered sequence of change events that occur within your collections.
+3. AWS Lambda fetches credentials from AWS Secrets Manager to read from Amazon DocumentDB change streams. 
+4. AWS Lambda streams the updates from Amazon DocumentDB change streams to the Amazon OpenSearch Service in near real-time.
+5. Analytics or reporting tools fetch the data from the Amazon OpenSearch service for reporting. 
 
-Start this section with the following boilerplate text:
 
-_You are responsible for the cost of the AWS services used while running this Guidance. As of <month> <year>, the cost for running this Guidance with the default settings in the <Default AWS Region (Most likely will be US East (N. Virginia)) > is approximately $<n.nn> per month for processing ( <nnnnn> records )._
+### Cost 
 
-Replace this amount with the approximate cost for running your Guidance in the default Region. This estimate should be per month and for processing/serving resonable number of requests/entities.
+_You are responsible for the cost of the AWS services used while running this Guidance. As of June 2024, the cost for running this Guidance with the default settings in the <Default AWS Region (Most likely will be US East (N. Virginia)) > is approximately $<n.nn> per month for processing ( <nnnnn> records )._
 
-Suggest you keep this boilerplate text:
 _We recommend creating a [Budget](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html) through [AWS Cost Explorer](https://aws.amazon.com/aws-cost-management/aws-cost-explorer/) to help manage costs. Prices are subject to change. For full details, refer to the pricing webpage for each AWS service used in this Guidance._
 
-### Sample Cost Table ( required )
+### Sample Cost Table 
 
 **Note : Once you have created a sample cost table using AWS Pricing Calculator, copy the cost breakdown to below table and upload a PDF of the cost estimation on BuilderSpace.**
 
@@ -61,26 +50,17 @@ The following table provides a sample cost breakdown for deploying this Guidance
 
 | AWS service  | Dimensions | Cost [USD] |
 | ----------- | ------------ | ------------ |
-| Amazon API Gateway | 1,000,000 REST API calls per month  | $ 3.50month |
-| Amazon Cognito | 1,000 active users per month without advanced security feature | $ 0.00 |
+| Amazon DocumentDB | xxx  | $ 3.50month |
+| ....... | 1,000 active users per month without advanced security feature | $ 0.00 |
 
 ## Prerequisites (required)
 
+1. Install and configure the latest version of the [AWS CLI (2.2.37 or newer)](https://aws.amazon.com/cli/) on the compute instance you are going to use to interact with. This can be your personal laptop, an Amazon EC2 instance, Cloud9, or similar. 
+2.  To deploy this guidance, ensure that the user has permissions to create, list, and modify resources for Amazon DocumentDB, Amazon OpenSearch, AWS Lambda, AWS Secrets Manager and other required resources. 
+
 ### Operating System (required)
 
-- Talk about the base Operating System (OS) and environment that can be used to run or deploy this Guidance, such as *Mac, Linux, or Windows*. Include all installable packages or modules required for the deployment. 
-- By default, assume Amazon Linux 2/Amazon Linux 2023 AMI as the base environment. All packages that are not available by default in AMI must be listed out.  Include the specific version number of the package or module.
-
-**Example:**
 “These deployment instructions are optimized to best work on **<Amazon Linux 2 AMI>**.  Deployment in another OS may require additional steps.”
-
-- Include install commands for packages, if applicable.
-
-
-### Third-party tools (If applicable)
-
-*List any installable third-party tools required for deployment.*
-
 
 ### AWS account requirements (If applicable)
 
@@ -210,6 +190,7 @@ Include a legal disclaimer
 *Customers are responsible for making their own independent assessment of the information in this Guidance. This Guidance: (a) is for informational purposes only, (b) represents AWS current product offerings and practices, which are subject to change without notice, and (c) does not create any commitments or assurances from AWS and its affiliates, suppliers or licensors. AWS products or services are provided “as is” without warranties, representations, or conditions of any kind, whether express or implied. AWS responsibilities and liabilities to its customers are controlled by AWS agreements, and this Guidance is not part of, nor does it modify, any agreement between AWS and its customers.*
 
 
-## Authors (optional)
+## Authors 
 
-Name of code contributors
+Anshu Vajpayee
+Kaarthiik Thota
