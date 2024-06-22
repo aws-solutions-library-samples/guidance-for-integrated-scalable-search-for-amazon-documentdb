@@ -6,7 +6,7 @@
 
 ### Required
 
-1. [Overview]
+1. [Overview](#Overview)
     - [Cost](#cost)
 2. [Prerequisites](#prerequisites-required)
     - [Operating System](#operating-system-required)
@@ -15,12 +15,9 @@
 5. [Running the Guidance](#running-the-guidance-required)
 6. [Next Steps](#next-steps-required)
 7. [Cleanup](#cleanup-required)
+8. [Authors](#authors-optional)
 
-***Optional***
-
-11. [Authors](#authors-optional)
-
-## Overview (required)
+## Overview
 
 
 Amazon DocumentDB provides native text search and vector search capabilities. With Amazon OpenSearch Service you can run advance search and analytics  such as fuzzy search, synonym search, cross-collection search, and multilingual search on Amazon DocumentDB data. 
