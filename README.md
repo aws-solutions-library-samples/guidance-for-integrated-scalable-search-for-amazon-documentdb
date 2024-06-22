@@ -50,65 +50,42 @@ The following table provides a sample cost breakdown for deploying this Guidance
 | Amazon DocumentDB | xxx  | $ 3.50month |
 | ....... | 1,000 active users per month without advanced security feature | $ 0.00 |
 
-## Prerequisites (required)
+## Prerequisites 
 
 1. Install and configure the latest version of the [AWS CLI (2.2.37 or newer)](https://aws.amazon.com/cli/) on the compute instance you are going to use to interact with. This can be your personal laptop, an Amazon EC2 instance, Cloud9, or similar. 
-2.  To deploy this guidance, ensure that the user has permissions to create, list, and modify resources for Amazon DocumentDB, Amazon OpenSearch, AWS Lambda, AWS Secrets Manager and other required resources. 
+2.  To deploy this guidance, ensure that the user has permissions to create, list, and modify resources 
+   - A VPC and the required networking components
+   - Amazon DocumentDB
+   - Amazon OpenSearch
+   - AWS Lambda
+   - An AWS Cloud9 environment 
+   - AWS Secrets Manager  
 
-### Operating System (required)
+### Operating System 
 
 “These deployment instructions are optimized to best work on **<Amazon Linux 2 AMI>**.  Deployment in another OS may require additional steps.”
 
-### AWS account requirements (If applicable)
+## Deployment Steps
 
-*List out pre-requisites required on the AWS account if applicable, this includes enabling AWS regions, requiring ACM certificate.*
+### Using AWS CLI
+1. Clone the repo using command ```gh repo clone aws-solutions-library-samples/guidance-for-integrated-scalable-search-for-amazon-documentdb-with-amazon-opensearch```
+2. cd to the repo folder ```cd guidance-for-integrated-scalable-search-for-amazon-documentdb-with-amazon-opensearch/deployment```
+3. Choose the parameters
+4. Run this command to deploy the stack ```aws cloudformation create-stack --stack-name <stack-name> --template-body file://docdb_change_streams_amazon_os.yml --parameters <>=<key1>,ParameterValue=<value1> ParameterKey=<key2>,ParameterValue=<value2> --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM``` 
+   
 
-**Example:** “This deployment requires you have public ACM certificate available in your AWS account”
-
-**Example resources:**
-- ACM certificate 
-- DNS record
-- S3 bucket
-- VPC
-- IAM role with specific permissions
-- Enabling a Region or service etc.
-
-
-### aws cdk bootstrap (if sample code has aws-cdk)
-
-<If using aws-cdk, include steps for account bootstrap for new cdk users.>
-
-**Example blurb:** “This Guidance uses aws-cdk. If you are using aws-cdk for first time, please perform the below bootstrapping....”
-
-### Service limits  (if applicable)
-
-<Talk about any critical service limits that affect the regular functioning of the Guidance. If the Guidance requires service limit increase, include the service name, limit name and link to the service quotas page.>
-
-### Supported Regions (if applicable)
-
-<If the Guidance is built for specific AWS Regions, or if the services used in the Guidance do not support all Regions, please specify the Region this Guidance is best suited for>
-
-
-## Deployment Steps (required)
-
-Deployment steps must be numbered, comprehensive, and usable to customers at any level of AWS expertise. The steps must include the precise commands to run, and describe the action it performs.
-
-* All steps must be numbered.
-* If the step requires manual actions from the AWS console, include a screenshot if possible.
-* The steps must start with the following command to clone the repo. ```git clone xxxxxxx```
-* If applicable, provide instructions to create the Python virtual environment, and installing the packages using ```requirement.txt```.
-* If applicable, provide instructions to capture the deployed resource ARN or ID using the CLI command (recommended), or console action.
-
- 
-**Example:**
-
-1. Clone the repo using command ```git clone xxxxxxxxxx```
-2. cd to the repo folder ```cd <repo-name>```
-3. Install packages in requirements using command ```pip install requirement.txt```
-4. Edit content of **file-name** and replace **s3-bucket** with the bucket name in your account.
-5. Run this command to deploy the stack ```cdk deploy``` 
-6. Capture the domain name created by running this CLI command ```aws apigateway ............```
-
+### Using AWS Console
+1. Download the [docdb_change_streams_amazon_os.yml](#https://aws-blogs-artifacts-public.s3.amazonaws.com/artifacts/DBBLOG-3344/docdb_change_streams_amazon_os.yml)
+2. Navigate to AWS CloudFormation service on your AWS Console
+3. Choose ***Create stack*** and select **with new resources (standard)**
+4. On **Specify template** choose ***Upload a template file***
+5. For Stack name, enter the name for your CloudFormation stack.
+6. For DocDBIdentifier, enter the name of your Amazon DocumentDB cluster.
+7. For DocDBPassword, enter the administrator password for your Amazon DocumentDB cluster (minimum 8 characters).
+8. For DocDBUsername, enter the name of your administrator user in the Amazon DocumentDB cluster.
+9. For ExistingCloud9Role, choose True if you have the AWS Identity and Access Management (IAM) role AWSCloud9SSMAccessRole created in your account. If you have used AWS Cloud9 before, you should already have an existing role. You can verify by going to the IAM console and searching for it on the Roles page. Stack creation will fail if the roles exists and you choose False.
+Choose Next.
+10. Select the check box in the Capabilities section to allow the stack to create an IAM role, then choose Submit.
 
 
 ## Deployment Validation  (required)
@@ -149,41 +126,10 @@ Provide suggestions and recommendations about how customers can modify the param
 
 
 
-## FAQ, known issues, additional considerations, and limitations (optional)
 
+## Notices 
 
-**Known issues (optional)**
-
-<If there are common known issues, or errors that can occur during the Guidance deployment, describe the issue and resolution steps here>
-
-
-**Additional considerations (if applicable)**
-
-<Include considerations the customer must know while using the Guidance, such as anti-patterns, or billing considerations.>
-
-**Examples:**
-
-- “This Guidance creates a public AWS bucket required for the use-case.”
-- “This Guidance created an Amazon SageMaker notebook that is billed per hour irrespective of usage.”
-- “This Guidance creates unauthenticated public API endpoints.”
-
-
-Provide a link to the *GitHub issues page* for users to provide feedback.
-
-
-**Example:** *“For any feedback, questions, or suggestions, please use the issues tab under this repo.”*
-
-## Revisions (optional)
-
-Document all notable changes to this project.
-
-Consider formatting this section based on Keep a Changelog, and adhering to Semantic Versioning.
-
-## Notices (optional)
-
-Include a legal disclaimer
-
-**Example:**
+Disclaimer: 
 *Customers are responsible for making their own independent assessment of the information in this Guidance. This Guidance: (a) is for informational purposes only, (b) represents AWS current product offerings and practices, which are subject to change without notice, and (c) does not create any commitments or assurances from AWS and its affiliates, suppliers or licensors. AWS products or services are provided “as is” without warranties, representations, or conditions of any kind, whether express or implied. AWS responsibilities and liabilities to its customers are controlled by AWS agreements, and this Guidance is not part of, nor does it modify, any agreement between AWS and its customers.*
 
 
