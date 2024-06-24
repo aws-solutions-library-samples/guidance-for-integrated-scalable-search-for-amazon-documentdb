@@ -86,9 +86,15 @@ Below are the steps to deploy the Cloudformation temolate using the AWS Console
 11. Select the check box in the **Capabilities** section to allow the stack to create an IAM role, then choose **Submit**.
 
 ### Using AWS CLI
-1. Clone the repo using command ```gh repo clone aws-solutions-library-samples/guidance-for-integrated-scalable-search-for-amazon-documentdb-with-amazon-opensearch```
-2. cd to the repo folder ```cd guidance-for-integrated-scalable-search-for-amazon-documentdb-with-amazon-opensearch/deployment```
-3. Here is an example command to deploy the stack
+1. Clone the repo using command
+ 
+   ```gh repo clone aws-solutions-library-samples/guidance-for-integrated-scalable-search-for-amazon-documentdb-with-amazon-opensearch```
+   
+3. Change directory  to the deplpoyment folder
+
+   ```cd guidance-for-integrated-scalable-search-for-amazon-documentdb-with-amazon-opensearch/deployment```
+   
+4. Create the stack, here is an example command to deploy the stack
    
 ```aws cloudformation create-stack --template-body file://docdb_change_streams_amazon_os.yml --stack-name <StackName> --parameters ParameterKey=DocDBIdentifier,ParameterValue=<DocmentDB_Identifier> ParameterKey=DocDBPassword,ParameterValue=<DocumentDB_Password> ParameterKey=DocDBUsername,ParameterValue=<DocumentDB_Username> ParameterKey=ExistingCloud9Role,ParameterValue=<true or false> --capabilities <CAPABILITY_NAMED_IAM>``` 
 
@@ -111,15 +117,68 @@ Deployment validation can be done using AWS Console or AWS CLI
 
 ## Running the Guidance (required)
 
+### Set up an AWS Cloud9 environment
 
-This section should include:
+1. Navigate to the AWS Cloud9 console, Select **Open** for **ChangeStreamsCloud9** environment.
+   **Note**: If you have launched the infrastructure using the CLI depending upon your premission setup you may need to add provide access, following commands can be helpful.
+   i. List the cloud9 environments ```aws cloud9 list-environments```
+   ii. If you have multiple cloud9 environments, you can use ```aws cloud9 describe-environment-memberships --environment-id <environmentID> ``` to identify the right one
+   iii. Add your AWS console user/role to the environment ``` aws cloud9 create-environment-membership --environment-id <environmentID> --user-arn <AWSConsoleUserARN> --permissions read-write ```
+2. Launch a new terminal window by choosing Window and New Terminal.
+3. Install the required packages by running the following script to connect to Amazon DocumentDB using a terminal and load the reviews dataset using a Python script:
 
-* Guidance inputs
-* Commands to run
-* Expected output (provide screenshot if possible)
-* Output description
+```
+# Setting up mongo 4.0 repo
 
+echo -e "[mongodb-org-4.0] \nname=MongoDB Repository\nbaseurl=https://repo.mongodb.org/yum/amazon/2013.03/mongodb-org/4.0/x86_64/\ngpgcheck=1 \nenabled=1 \ngpgkey=https://www.mongodb.org/static/pgp/server-4.0.asc" | sudo tee /etc/yum.repos.d/mongodb-org-4.0.repo
 
+# Installing packages
+sudo yum -y update
+sudo yum -y install mongodb-org-shell
+sudo python3 -m pip install --upgrade pip
+sudo python3 -m pip install pandas pymongo
+
+# Downloading the SSL file and the loader
+
+wget https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem
+wget https://aws-blogs-artifacts-public.s3.amazonaws.com/artifacts/DBBLOG-3344/loader.py
+
+```
+### Enable Amazon DocumentDB change streams
+
+For Amazon DocumentDB cluster details, navigate to Amazon DocumentDB console and locate your cluster.
+
+1. On your AWS Cloud 9 terminal run the following commands, replacing the values with those of your cluster
+
+```
+export DOCDB_ENDPOINT=<Amazon DocumentDB Endpoint>
+export USERNAME=<Amazon DocumentDB cluster username>
+export PASSWORD=<Amazon DocumentDB cluster password>
+
+echo "export DOCDB_ENDPOINT=${DOCDB_ENDPOINT}" >> ~/.bash_profile
+echo "export USERNAME=${USERNAME}" >> ~/.bash_profile
+echo "export PASSWORD=${PASSWORD}" >> ~/.bash_profile
+```
+2. Connect to Amazon DocumentDB:
+
+``` mongo --ssl --host $DOCDB_ENDPOINT:27017 --sslCAFile global-bundle.pem --username $USERNAME --password $PASSWORD ```
+
+3. Enable change streams on all databases and collections:
+   
+``` db.adminCommand({modifyChangeStreams: 1, database: "", collection: "", enable: true}) ```
+
+### Configure the Amazon DocumentDB change stream as a source for the Lambda function
+
+1. Navigate to Lambda console, navigate to the Lambda function named ```DocumentDBLambdaESM```.
+On the Configuration tab, choose Triggers and choose Add trigger.
+Select the source as Amazon DocumentDB for the trigger configuration.
+For DocumentDB cluster, choose the cluster created by the CloudFormation stack.
+For Database name, enter productreviewdb.
+For Collection name, enter productreviews.
+For Secrets Manager key, choose the Secrets Manager key created by the CloudFormation stack. You can find it in the CloudFormation stack outputs as the value for the key DocDBSecretName.
+For Batch window, set it to the maximum amount of time in seconds to gather records before invoking your function. We set this to a low amount (5 seconds) to make the invocations happen faster.
+For all other parameters, leave them at their defaults.
+Choose Add.
 
 ## Next Steps (required)
 
@@ -146,4 +205,5 @@ Disclaimer:
 ## Authors 
 
 Anshu Vajpayee
+
 Kaarthiik Thota
