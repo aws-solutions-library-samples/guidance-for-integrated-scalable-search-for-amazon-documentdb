@@ -170,15 +170,15 @@ echo "export PASSWORD=${PASSWORD}" >> ~/.bash_profile
 ### Configure the Amazon DocumentDB change stream as a source for the Lambda function
 
 1. Navigate to Lambda console, navigate to the Lambda function named ```DocumentDBLambdaESM```.
-On the Configuration tab, choose Triggers and choose Add trigger.
-Select the source as Amazon DocumentDB for the trigger configuration.
-For DocumentDB cluster, choose the cluster created by the CloudFormation stack.
-For Database name, enter productreviewdb.
-For Collection name, enter productreviews.
-For Secrets Manager key, choose the Secrets Manager key created by the CloudFormation stack. You can find it in the CloudFormation stack outputs as the value for the key DocDBSecretName.
-For Batch window, set it to the maximum amount of time in seconds to gather records before invoking your function. We set this to a low amount (5 seconds) to make the invocations happen faster.
-For all other parameters, leave them at their defaults.
-Choose Add.
+2. On the Configuration tab, choose Triggers and choose Add trigger.
+3. Select the source as Amazon DocumentDB for the trigger configuration.
+4. For DocumentDB cluster, choose the cluster created by the CloudFormation stack.
+5. For Database name, enter ```productreviewdb```.
+6. For Collection name, enter ```productreviews```.
+7. For Secrets Manager key, choose the Secrets Manager key created by the CloudFormation stack. You can find it in the CloudFormation stack outputs as the value for the key **DocDBSecretName**.
+8. For Batch window, set it to the maximum amount of time in seconds to gather records before invoking your function. We set this to a low amount (5 seconds) to make the invocations happen faster.
+9. For all other parameters, leave them at their defaults.
+10. Choose Add.
 
 ## Next Steps (required)
 
