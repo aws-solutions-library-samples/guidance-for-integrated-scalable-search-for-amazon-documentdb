@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: "2010-09-09"
-Description: This stack deploys the baseline infrastructure to be used for AmazonDocumentDB
+Description: This stack deploys the baseline infrastructure to be used for Amazon DocumentDB and Amazon OpenSearch Service with AWS L
 
 Parameters:
 
@@ -469,7 +469,7 @@ Resources:
       MasterUserPassword: !Ref DocDBPassword
       DBSubnetGroupName : !Ref DocumentDBSubnetGroup
       StorageEncrypted: true
-      EngineVersion: "4.0.0"
+      EngineVersion: "5.0.0"
       DeletionProtection: false
       Tags:
         - Key: Name
@@ -504,8 +504,9 @@ Resources:
     Condition: CreateCloud9Policy
     Properties:
       ConnectionType: CONNECT_SSM
-      Description: Cloud9 instance to access Cloud9
+      Description: Cloud9 instance to access AWS Cloud9
       InstanceType: m5.large
+      ImageId: amazonlinux-2-x86_64
       Name: ChangeStreamsCloud9
       SubnetId: !Ref PrivateSubnetOne
 
@@ -657,7 +658,7 @@ Resources:
               return res.status
 
       MemorySize: 128
-      Runtime: python3.7
+      Runtime: python3.12
       Timeout: 120
       Environment: 
         Variables:
