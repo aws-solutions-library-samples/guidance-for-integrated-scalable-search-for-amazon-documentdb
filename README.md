@@ -1,10 +1,7 @@
 # Guidance for Integrated scalable search for Amazon DocumentDB with Amazon OpenSearch
 
 
-## Table of Content (required)
-
-
-### Required
+## Table of Content 
 
 1. [Overview](#Overview)
     - [Cost](#cost)
@@ -47,7 +44,7 @@ The following table provides a sample cost breakdown for deploying this Guidance
 
 | AWS service  | Dimensions | Cost [USD] |
 | ----------- | ------------ | ------------ |
-| Amazon DocumentDB | xxx  | $ 3.50month |
+| Amazon DocumentDB | xxx  | $ xxxx |
 | ....... | 1,000 active users per month without advanced security feature | $ 0.00 |
 
 ## Prerequisites 
@@ -64,7 +61,7 @@ The following table provides a sample cost breakdown for deploying this Guidance
 
 ### Operating System 
 
-“These deployment instructions are optimized to best work on **<Amazon Linux 2 AMI>**.  Deployment in another OS may require additional steps.”
+“These deployment instructions are optimized to best work on Amazon Linux 2 AMI or Mac OS.  Deployment in another OS may require additional steps.”
 
 ## Deployment Steps
 
@@ -72,7 +69,7 @@ The cloudformation stack can be easily deployed using AWS Console or using AWS C
 
 ### Using AWS Console
 Below are the steps to deploy the Cloudformation temolate using the AWS Console
-1. Download the [docdb_change_streams_amazon_os.yml](https://aws-blogs-artifacts-public.s3.amazonaws.com/artifacts/DBBLOG-3344/docdb_change_streams_amazon_os.yml)
+1. Download the [docdb_change_streams_amazon_os.yml](https://github.com/aws-solutions-library-samples/guidance-for-integrated-scalable-search-for-amazon-documentdb-with-amazon-opensearch/blob/main/deployment/docdb_change_streams_amazon_os.yml)
 2. Navigate to AWS CloudFormation service on your AWS Console
 3. Choose ***Create stack*** and select **with new resources (standard)**
 4. On **Specify template** choose ***Upload a template file***
@@ -86,6 +83,7 @@ Below are the steps to deploy the Cloudformation temolate using the AWS Console
 11. Select the check box in the **Capabilities** section to allow the stack to create an IAM role, then choose **Submit**.
 
 ### Using AWS CLI
+
 1. Clone the repo using command
  
    ```gh repo clone aws-solutions-library-samples/guidance-for-integrated-scalable-search-for-amazon-documentdb-with-amazon-opensearch```
@@ -96,7 +94,7 @@ Below are the steps to deploy the Cloudformation temolate using the AWS Console
    
 4. Create the stack, here is an example command to deploy the stack
    
-```aws cloudformation create-stack --template-body file://docdb_change_streams_amazon_os.yml --stack-name <StackName> --parameters ParameterKey=DocDBIdentifier,ParameterValue=<DocmentDB_Identifier> ParameterKey=DocDBPassword,ParameterValue=<DocumentDB_Password> ParameterKey=DocDBUsername,ParameterValue=<DocumentDB_Username> ParameterKey=ExistingCloud9Role,ParameterValue=<true or false> --capabilities <CAPABILITY_NAMED_IAM>``` 
+``` aws cloudformation create-stack --template-body file://docdb_change_streams_amazon_os.yml --stack-name <StackName> --parameters ParameterKey=DocDBIdentifier,ParameterValue=<DocmentDB_Identifier> ParameterKey=DocDBPassword,ParameterValue=<DocumentDB_Password> ParameterKey=DocDBUsername,ParameterValue=<DocumentDB_Username> ParameterKey=ExistingCloud9Role,ParameterValue=<true or false> --capabilities <CAPABILITY_NAMED_IAM> ``` 
 
 ## Deployment Validation  
 
@@ -111,8 +109,8 @@ Deployment validation can be done using AWS Console or AWS CLI
 ### Using AWS CLI
 
 * Open CloudFormation console and verify the status of the template with the name starting with xxxxxx.
-* If deployment is successful, you should see an active database instance with the name starting with <xxxxx> in        the RDS console.
-*  Run the following CLI command to validate the deployment: ```aws cloudformation describe xxxxxxxxxxxxx```
+* If deployment is successful, you should see an active database instance with the name starting in Amazon DocumentDB console.
+* Run the following CLI command to validate the deployment: ```aws cloudformation describe xxxxxxxxxxxxx```
 
 
 ## Running the Guidance (required)
@@ -120,12 +118,23 @@ Deployment validation can be done using AWS Console or AWS CLI
 ### Set up an AWS Cloud9 environment
 
 1. Navigate to the AWS Cloud9 console, Select **Open** for **ChangeStreamsCloud9** environment.
-   **Note**: If you have launched the infrastructure using the CLI depending upon your premission setup you may need to add provide access, following commands can be helpful.
-   i. List the cloud9 environments ```aws cloud9 list-environments```
-   ii. If you have multiple cloud9 environments, you can use ```aws cloud9 describe-environment-memberships --environment-id <environmentID> ``` to identify the right one
-   iii. Add your AWS console user/role to the environment ``` aws cloud9 create-environment-membership --environment-id <environmentID> --user-arn <AWSConsoleUserARN> --permissions read-write ```
-2. Launch a new terminal window by choosing Window and New Terminal.
-3. Install the required packages by running the following script to connect to Amazon DocumentDB using a terminal and load the reviews dataset using a Python script:
+
+    **Note**: If you have launched the infrastructure using the CLI depending upon your premission setup you may need to add provide access, following commands can be helpful.
+
+   i. List the cloud9 environments
+
+   ```aws cloud9 list-environments```
+
+   ii. If you have multiple cloud9 environments, you can use the following command to identify the applicable one
+   
+   ```aws cloud9 describe-environment-memberships --environment-id <environmentID> ``` 
+
+   iii. Add your AWS console user/role to the environment
+
+   ``` aws cloud9 create-environment-membership --environment-id <environmentID> --user-arn <AWSConsoleUserARN> --permissions read-write ```
+   
+3. Launch a new terminal window by choosing Window and New Terminal.
+4. Install the required packages by running the following script to connect to Amazon DocumentDB using a terminal and load the reviews dataset using a Python script:
 
 ```
 # Setting up mongo 4.0 repo
@@ -141,7 +150,7 @@ sudo python3 -m pip install pandas pymongo
 # Downloading the SSL file and the loader
 
 wget https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem
-wget https://aws-blogs-artifacts-public.s3.amazonaws.com/artifacts/DBBLOG-3344/loader.py
+wget https://github.com/aws-solutions-library-samples/guidance-for-integrated-scalable-search-for-amazon-documentdb-with-amazon-opensearch/blob/main/assets/loader.py
 
 ```
 ### Enable Amazon DocumentDB change streams
@@ -176,14 +185,127 @@ echo "export PASSWORD=${PASSWORD}" >> ~/.bash_profile
 5. For Database name, enter ```productreviewdb```.
 6. For Collection name, enter ```productreviews```.
 7. For Secrets Manager key, choose the Secrets Manager key created by the CloudFormation stack. You can find it in the CloudFormation stack outputs as the value for the key **DocDBSecretName**.
-8. For Batch window, set it to the maximum amount of time in seconds to gather records before invoking your function. We set this to a low amount (5 seconds) to make the invocations happen faster.
+8. For **Batch window**, set it to the maximum amount of time in seconds to gather records before invoking your function. We set this to a low amount (5 seconds) to make the invocations happen faster.
 9. For all other parameters, leave them at their defaults.
-10. Choose Add.
+10. Choose **Add**.
 
-## Next Steps (required)
+### Load the reviews dataset into Amazon DocumentDB and search 
 
-Provide suggestions and recommendations about how customers can modify the parameters and the components of the Guidance to further enhance it according to their requirements.
+Navigate to AWS Cloud9, launch new terminal and execute the loader script
+   ``` python3 loader.py```
 
+
+### Setup OpenSearch on AWS Cloud9 terminal
+
+1. From the Cloudfromation stack outputs, copy your Opensearch Sevice endpoint
+2. On the AWS Cloud9 terminal run the 
+
+```
+export AOS_HOST=<Amazon OpenSearch Service Endpoint>
+echo "export AOS_HOST=${AOS_HOST}" >> ~/.bash_profile
+curl https://$AOS_HOST/_cat/indices/documentdb-reviews?v=true
+
+```
+You will see similar output:
+
+```
+health status index              uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+yellow open   documentdb-reviews HSI2-ih-QLa_PTYY-yDHng   5   1     102931         4354     81.9mb         81.9mb
+```
+
+## Run queries on Amazon DocumentDB data in OpenSearch Service
+
+### Fuzzy search:
+
+Fuzzy queries return documents that contain terms similar to the search term. For example, if the search term is "easy," documents with data matching "eays", "ease", "easi" and more are matched.
+
+Here is query to find all reviews with a review body that has a fuzzy match for “easi”:
+```
+curl https://$AOS_HOST/documentdb-reviews/_search?pretty -H "Content-Type: application/json" -d \
+'
+{
+    "query": {
+        "fuzzy" : {
+            "review_body" : {
+                "value": "easi"
+            }
+        }
+    }
+}
+'
+```
+Sample output:
+```
+{
+  "took" : 62,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : {
+      "value" : 10000,
+      "relation" : "gte"
+    },
+    "max_score" : 3.0857868,
+    "hits" : [
+      {
+        "_index" : "documentdb-reviews",
+        "_id" : "64d5f4a20f98e701c42b5bae",
+```
+
+
+### Search with synonyms:
+
+You can upload custom dictionary files such as stop words and synonyms referred to as packages to your Amazon OpenSearch cluster to tell OpenSearch to ignore certain high-frequency words or to treat terms like “brinjal”, “aubergine”, and “eggplant” as equivalent, resulting in better search results.
+
+To implement search with synonyms, you need to perform additional configuration on your Amazon OpenSearch Service cluster. For steps to implement synonym search, see [custom packages for Amazon OpenSearch](https://aws.amazon.com/blogs/database/perform-fuzzy-full-text-search-and-semantic-search-on-amazon-documentdb-using-amazon-opensearch-service/#:~:text=custom%20packages%20for%20Amazon%20OpenSearch.) . 
+
+The following is an example for synonym search that considers "software" and "program" equivalent in the review_body field.
+
+```
+curl https://$AOS_HOST/documentdb-reviews/_search?pretty -H "Content-Type: application/json" -d \
+'
+{
+  "query": {
+    "match": {
+      "review_body": "software"
+    }
+  }
+}
+'
+```
+
+Sample output:
+```
+{
+        "_index": "documentdb-reviews",
+        "_id": "nqde34kB-h_19Z5f1Qml",
+        "_score": 9.878886,
+        "_source": {
+          "customer_id": 326008690,
+          "product_id": "P5STAPV6HU",
+          "product_category": "Office Products",
+          "review_id": "R75Y7F18631HQ",
+          "helpful_votes": 4,
+          "product_title": "RELIABLE TAX PROGRAM",
+          "review_body": "RELIABLE TAX PROGRAM software helps you manage your taxes smoothly and efficiently with user-friendly features designed for tax prep novices and pros alike. This program simplifies the tax filing process.",
+          "review_date": "2021-04-20",
+          "star_rating": 5,
+          "total_votes": 4,
+          "verified_purchase": true,
+          "helpful_votes#review_id": "04#R75Y7F18631HQ"
+        }
+      }
+
+```
+
+## Next Steps
+
+You can explore with more custom packages for synonym search and using OpenSearch Service Dashboard to visualise data
 
 ## Cleanup 
 
@@ -194,11 +316,11 @@ Provide suggestions and recommendations about how customers can modify the param
 ### Using AWS CLI
 To delete the stack run the following command (replace the stack-name)
 
-``` aws cloudformation delete-stack  --stack-name  ```
+``` aws cloudformation delete-stack  --stack-name <StackName> ```
 
 ## Notices 
 
-Disclaimer: 
+**Disclaimer: **
 *Customers are responsible for making their own independent assessment of the information in this Guidance. This Guidance: (a) is for informational purposes only, (b) represents AWS current product offerings and practices, which are subject to change without notice, and (c) does not create any commitments or assurances from AWS and its affiliates, suppliers or licensors. AWS products or services are provided “as is” without warranties, representations, or conditions of any kind, whether express or implied. AWS responsibilities and liabilities to its customers are controlled by AWS agreements, and this Guidance is not part of, nor does it modify, any agreement between AWS and its customers.*
 
 
