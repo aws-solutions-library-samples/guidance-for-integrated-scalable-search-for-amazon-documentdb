@@ -1,10 +1,7 @@
 # Guidance for Integrated scalable search for Amazon DocumentDB with Amazon OpenSearch
 
 
-## Table of Content (required)
-
-
-### Required
+## Table of Content 
 
 1. [Overview](#Overview)
     - [Cost](#cost)
@@ -47,7 +44,7 @@ The following table provides a sample cost breakdown for deploying this Guidance
 
 | AWS service  | Dimensions | Cost [USD] |
 | ----------- | ------------ | ------------ |
-| Amazon DocumentDB | xxx  | $ 3.50month |
+| Amazon DocumentDB | xxx  | $ xxxx |
 | ....... | 1,000 active users per month without advanced security feature | $ 0.00 |
 
 ## Prerequisites 
@@ -64,7 +61,7 @@ The following table provides a sample cost breakdown for deploying this Guidance
 
 ### Operating System 
 
-“These deployment instructions are optimized to best work on **<Amazon Linux 2 AMI>**.  Deployment in another OS may require additional steps.”
+“These deployment instructions are optimized to best work on Amazon Linux 2 AMI or Mac OS.  Deployment in another OS may require additional steps.”
 
 ## Deployment Steps
 
@@ -86,6 +83,7 @@ Below are the steps to deploy the Cloudformation temolate using the AWS Console
 11. Select the check box in the **Capabilities** section to allow the stack to create an IAM role, then choose **Submit**.
 
 ### Using AWS CLI
+
 1. Clone the repo using command
  
    ```gh repo clone aws-solutions-library-samples/guidance-for-integrated-scalable-search-for-amazon-documentdb-with-amazon-opensearch```
@@ -96,7 +94,7 @@ Below are the steps to deploy the Cloudformation temolate using the AWS Console
    
 4. Create the stack, here is an example command to deploy the stack
    
-```aws cloudformation create-stack --template-body file://docdb_change_streams_amazon_os.yml --stack-name <StackName> --parameters ParameterKey=DocDBIdentifier,ParameterValue=<DocmentDB_Identifier> ParameterKey=DocDBPassword,ParameterValue=<DocumentDB_Password> ParameterKey=DocDBUsername,ParameterValue=<DocumentDB_Username> ParameterKey=ExistingCloud9Role,ParameterValue=<true or false> --capabilities <CAPABILITY_NAMED_IAM>``` 
+``` aws cloudformation create-stack --template-body file://docdb_change_streams_amazon_os.yml --stack-name <StackName> --parameters ParameterKey=DocDBIdentifier,ParameterValue=<DocmentDB_Identifier> ParameterKey=DocDBPassword,ParameterValue=<DocumentDB_Password> ParameterKey=DocDBUsername,ParameterValue=<DocumentDB_Username> ParameterKey=ExistingCloud9Role,ParameterValue=<true or false> --capabilities <CAPABILITY_NAMED_IAM> ``` 
 
 ## Deployment Validation  
 
@@ -111,8 +109,8 @@ Deployment validation can be done using AWS Console or AWS CLI
 ### Using AWS CLI
 
 * Open CloudFormation console and verify the status of the template with the name starting with xxxxxx.
-* If deployment is successful, you should see an active database instance with the name starting with <xxxxx> in        the RDS console.
-*  Run the following CLI command to validate the deployment: ```aws cloudformation describe xxxxxxxxxxxxx```
+* If deployment is successful, you should see an active database instance with the name starting in Amazon DocumentDB console.
+* Run the following CLI command to validate the deployment: ```aws cloudformation describe xxxxxxxxxxxxx```
 
 
 ## Running the Guidance (required)
@@ -322,7 +320,7 @@ To delete the stack run the following command (replace the stack-name)
 
 ## Notices 
 
-Disclaimer: 
+**Disclaimer: **
 *Customers are responsible for making their own independent assessment of the information in this Guidance. This Guidance: (a) is for informational purposes only, (b) represents AWS current product offerings and practices, which are subject to change without notice, and (c) does not create any commitments or assurances from AWS and its affiliates, suppliers or licensors. AWS products or services are provided “as is” without warranties, representations, or conditions of any kind, whether express or implied. AWS responsibilities and liabilities to its customers are controlled by AWS agreements, and this Guidance is not part of, nor does it modify, any agreement between AWS and its customers.*
 
 
