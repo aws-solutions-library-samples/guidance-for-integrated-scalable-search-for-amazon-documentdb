@@ -486,6 +486,25 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub DocumentDBInstance-${AWS::StackName}
+  
+  DocumentDBInstance2:
+    Type: AWS::DocDB::DBInstance
+    Properties:
+      DBClusterIdentifier: !Ref DocumentDBCluster
+      DBInstanceClass: db.r6g.large
+      Tags:
+        - Key: Name
+          Value: !Sub DocumentDBInstance-${AWS::StackName}
+
+  DocumentDBInstance3:
+    Type: AWS::DocDB::DBInstance
+    Properties:
+      DBClusterIdentifier: !Ref DocumentDBCluster
+      DBInstanceClass: db.r6g.large
+      Tags:
+        - Key: Name
+          Value: !Sub DocumentDBInstance-${AWS::StackName}
+
 
   Cloud9envNew:
     Type: AWS::Cloud9::EnvironmentEC2
