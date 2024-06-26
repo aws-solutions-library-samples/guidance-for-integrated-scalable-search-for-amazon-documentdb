@@ -32,21 +32,18 @@ This guidance demonstrates way to run advance search and analytics on Amazon Doc
 
 ### Cost 
 
-_You are responsible for the cost of the AWS services used while running this Guidance. As of June 2024, the cost for running this Guidance with the default settings in the <Default AWS Region (Most likely will be US East (N. Virginia)) > is approximately $<n.nn> per month for processing ( <nnnnn> records )._
+_You are responsible for the cost of the AWS services used while running this Guidance. As of June 2024, the cost for running this Guidance with the default settings in the US East (N. Virginia) region is approximately $1410.36 per month with below configuration._
 
 _We recommend creating a [Budget](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html) through [AWS Cost Explorer](https://aws.amazon.com/aws-cost-management/aws-cost-explorer/) to help manage costs. Prices are subject to change. For full details, refer to the pricing webpage for each AWS service used in this Guidance._
 
-### Sample Cost Table 
-
-**Note : Once you have created a sample cost table using AWS Pricing Calculator, copy the cost breakdown to below table and upload a PDF of the cost estimation on BuilderSpace.**
-
 The following table provides a sample cost breakdown for deploying this Guidance with the default parameters in the US East (N. Virginia) Region for one month.
 
-| AWS service  | Dimensions | Cost [USD] |
+| AWS service  | Dimensions | Cost [USD/month] |
 | ----------- | ------------ | ------------ |
-| Amazon DocumentDB | xxx  | $ xxxx |
-| ....... | 1,000 active users per month without advanced security feature | $ 0.00 |
-
+| Amazon DocumentDB Instance Based Cluster | Standard Cluster Configuration, 3 X Instance type (db.r6g.large), Storage (100 GB), I/Os (100 millions), Backup 1 Day | $606.30 |
+| Amazon OpenSearch Service Serverless | 2 Indexing OSUs, 2 Search and Query OCUs, 20 GB index data | $701.28 |
+| AWS Lambda | Invoke Mode (Buffered), Architecture (x86), 15 million requests/month, 512 MB ephemeral storage | $27.38 |
+| AWS Secrets Manager | 1 Secret, 15 million requests/month | $75.40 |
 ## Prerequisites 
 
 1. Install and configure the latest version of the [AWS CLI (2.2.37 or newer)](https://aws.amazon.com/cli/) on the compute instance you are going to use to interact with. This can be your personal laptop, an Amazon EC2 instance, Cloud9, or similar. 
