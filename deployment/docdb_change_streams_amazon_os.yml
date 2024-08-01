@@ -1,6 +1,5 @@
----
 AWSTemplateFormatVersion: "2010-09-09"
-Description: This stack deploys the baseline infrastructure to be used for Amazon DocumentDB and Amazon OpenSearch Service with AWS L
+Description: This template deploys the infrastructure for Integrated, Scalable Search and Analytics on AWS (SO9501) and deploys Amazon DocumentDB and Amazon OpenSearch Service.
 
 Parameters:
 
